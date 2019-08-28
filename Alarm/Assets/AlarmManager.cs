@@ -199,4 +199,12 @@ public class AlarmManager : MonoBehaviour
     }
 }
 
+[Serializable]
+public class Data
+{
+    public string answer;
+    public bool forced;
+    public string image;
+}
+
 

@@ -1,18 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 
 public class SpanSetting : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private AlarmManager manager;
+    [SerializeField] private Text sleep;
+    [SerializeField] private Text rem;
+
+    private void Start()
     {
-        
+        sleep.text = manager.sleepTime.TotalMinutes.ToString();
+        rem.text = manager.REMtime.TotalMinutes.ToString();
+    }
+    public void Sleep()
+    {
+        manager.sleepTime=TimeSpan.FromMinutes(double.Parse(sleep.text));
     }
 
-    // Update is called once per frame
-    void Update()
+    public void REM()
     {
-        
+        manager.sleepTime = TimeSpan.FromMinutes(double.Parse(rem.text));
     }
 }
