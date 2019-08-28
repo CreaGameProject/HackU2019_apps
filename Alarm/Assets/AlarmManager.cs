@@ -194,8 +194,8 @@ public class AlarmManager : MonoBehaviour
         ReplaceClock(reminder);
         GetComponent<AudioSource>().Stop();
         Alarm = DateTime.MaxValue;
-        controler.AlarmOff();
         moment = false;
+        controler.AlarmOff();
     }
 }
 

@@ -22,6 +22,6 @@ public class SpanSetting : MonoBehaviour
 
     public void REM()
     {
-        manager.sleepTime = TimeSpan.FromMinutes(double.Parse(rem.text));
+        manager.REMtime = TimeSpan.FromMinutes(double.Parse(rem.text));
     }
 }

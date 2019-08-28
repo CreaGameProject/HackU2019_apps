@@ -13,18 +13,13 @@ public class DeviceControler : MonoBehaviour
     //以下の二つをこのクラスにおけるメインメソッドとします。
     public void AlarmOn()
     {
-
+        StartCoroutine(HttpPost());
     }
 
     public void AlarmOff()
     {
 
     }
-
-    //private void Start()
-    //{
-    //    StartCoroutine(HttpPost());
-    //}
 
     private IEnumerator HttpPost()
     {
