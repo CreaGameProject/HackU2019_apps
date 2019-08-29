@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 public class AlarmManager : MonoBehaviour
 {
@@ -46,6 +47,8 @@ public class AlarmManager : MonoBehaviour
         REMtime = TimeSpan.FromMinutes(60);
         imp = 1;
         SetImportance(imp);
+
+        StartCoroutine(AlarmInitialze());
     }
 
     private void FixedUpdate()
@@ -198,7 +201,50 @@ public class AlarmManager : MonoBehaviour
         moment = false;
         controler.AlarmOff();
     }
+
+    IEnumerator AlarmInitialze()
+    {
+        UnityWebRequest request = UnityWebRequest.Get("https://cgp-hacku2019.tech/api/tasks");
+
+        yield return request.SendWebRequest();
+        
+        if (request.isHttpError || request.isNetworkError)
+        {
+            Debug.Log(request.error);
+        }
+        else
+        {
+            String jsonString = "{\"items\":" + request.downloadHandler.text + "}";
+            AlarmTaskResponse response = JsonUtility.FromJson<AlarmTaskResponse>(jsonString);
+            AlarmTask task = response.items[0];
+
+            SetHour(task.soundsAt.Hour % 12);
+            SetMin(task.soundsAt.Minute);
+            SetAMPM(task.soundsAt.Hour > 12 ? 1 : 0);
+
+            AlarmSet();
+        }
+    }
 }
 
+[System.Serializable]
+public class AlarmTaskResponse
+{
+    public List<AlarmTask> items;
+}
 
+[System.Serializable]
+public class AlarmTask
+{
+    public string sounds_at;
 
+    public DateTime soundsAt
+    {
+         get
+        {
+            return DateTime.Parse(
+                sounds_at, null, System.Globalization.DateTimeStyles.RoundtripKind
+            );
+        }
+    }
+}
