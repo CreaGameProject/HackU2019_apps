@@ -2456,11 +2456,7 @@ MonoBehaviour:
   - {fileID: 206854267}
   - {fileID: 140341616}
   - {fileID: 1054651310}
-  clips:
-  - {fileID: 8300000, guid: ae24a5d60b25e5d449dbf3494c30f4b4, type: 3}
-  - {fileID: 8300000, guid: 7a7a5d6013f895049a75fe4961857454, type: 3}
-  - {fileID: 8300000, guid: 86acece05453c75489b5278c597e38cb, type: 3}
-  - {fileID: 8300000, guid: 4fdad2059c9ed724c9f9342301e4f1f9, type: 3}
+  imp: 0
 --- !u!82 &699889200
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2582,6 +2578,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf03201562e7645498271f2160bdb54c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: ae24a5d60b25e5d449dbf3494c30f4b4, type: 3}
+  - {fileID: 8300000, guid: 7a7a5d6013f895049a75fe4961857454, type: 3}
+  - {fileID: 8300000, guid: 86acece05453c75489b5278c597e38cb, type: 3}
+  - {fileID: 8300000, guid: 8b6987406c3b0ed4eb50533f728b1478, type: 3}
+  source: {fileID: 699889200}
+  manager: {fileID: 699889199}
 --- !u!1 &738751281
 GameObject:
   m_ObjectHideFlags: 0

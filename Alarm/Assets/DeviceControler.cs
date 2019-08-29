@@ -2,28 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.IO;
 
 /// <summary>
 /// 出力デバイスへの出力クラス
 /// </summary>
 public class DeviceControler : MonoBehaviour
 {
+    [SerializeField] private AudioClip[] clips;
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AlarmManager manager;
+
     string url = "https://yesno.wtf/api";
-    //以下の二つをこのクラスにおけるメインメソッドとします。
+    //以下の3つをこのクラスにおけるメインメソッドとします。
+
+    public void Sleep()
+    {
+        source.clip = clips[3];
+        source.Play();
+    }
     public void AlarmOn()
     {
-        StartCoroutine(HttpPost());
+        source.clip = clips[manager.imp];
+        source.Play();
+        //StartCoroutine(HttpPost());
+        //LEDon()
     }
 
     public void AlarmOff()
     {
-
+        source.Stop();
+        //LEDoff()
     }
 
+
+    //実験
     private IEnumerator HttpPost()
     {
-        Data data=new Data();
+        Data data = new Data();
         data.answer = "yes";
         data.forced = false;
         data.image = "image";
@@ -35,7 +50,7 @@ public class DeviceControler : MonoBehaviour
         UploadHandlerRaw uploadHandlerRaw = new UploadHandlerRaw(jsonBinary);
         uploadHandlerRaw.contentType = "application/json";
 
-        UnityWebRequest www =new UnityWebRequest(url, "POST", downloadHandlerBuffer, uploadHandlerRaw);
+        UnityWebRequest www = new UnityWebRequest(url, "POST", downloadHandlerBuffer, uploadHandlerRaw);
         yield return www.SendWebRequest();
 
         if (www.isNetworkError || www.isHttpError)
@@ -48,3 +63,5 @@ public class DeviceControler : MonoBehaviour
         }
     }
 }
+
+

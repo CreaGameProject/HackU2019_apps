@@ -19,17 +19,18 @@ public class AlarmManager : MonoBehaviour
     [SerializeField] private GameObject setSwitch;
     [SerializeField] private GameObject reminder;
     [SerializeField] private Button[] importance;
-    [SerializeField] private AudioClip[] clips;
 
     private SleepMesurement mesurement;
     private DeviceControler controler;
     private GameObject displayClock;
+
     public DateTime Alarm;
     public TimeSpan sleepTime;
     public TimeSpan REMtime;
+    public int imp;
+    
     private int h;
     private int m;
-    private int imp;
     private bool onoff;
     private bool moment;
 
@@ -44,14 +45,19 @@ public class AlarmManager : MonoBehaviour
         sleepTime = TimeSpan.FromMinutes(360);
         REMtime = TimeSpan.FromMinutes(60);
         imp = 1;
-        importance[imp].image.color = Color.red + Color.gray;
+        SetImportance(imp);
     }
 
     private void FixedUpdate()
     {
         if (onoff)
         {
-            if (Alarm - REMtime < DateTime.Now && (!moment && mesurement.REM))
+            if(Alarm < DateTime.Now)
+            {
+                GetUpAlarm();
+                moment = true;
+            }
+            else if (Alarm - REMtime < DateTime.Now && (!moment && mesurement.REM()))
             {
                 GetUpAlarm();
                 moment = true;
@@ -125,7 +131,7 @@ public class AlarmManager : MonoBehaviour
     {
         importance[imp].image.color = Color.grey / 2 + Color.black / 2;
         imp = input;
-        importance[imp].image.color = Color.grey + Color.red;
+        importance[imp].image.color = Color.grey + Color.blue;
     }
 
     public void AlarmSet()
@@ -173,8 +179,6 @@ public class AlarmManager : MonoBehaviour
     {
         reminder.GetComponentInChildren<Text>().text = "GOOD" + Environment.NewLine + "NIGHT";
         ReplaceClock(reminder);
-        GetComponent<AudioSource>().clip = clips[3];
-        GetComponent<AudioSource>().Play();
     }
 
     //起床時のアラーム
@@ -182,8 +186,6 @@ public class AlarmManager : MonoBehaviour
     {
         reminder.GetComponentInChildren<Text>().text = "GET UP!!";
         ReplaceClock(reminder);
-        GetComponent<AudioSource>().clip = clips[imp];
-        GetComponent<AudioSource>().Play();
         controler.AlarmOn();
     }
 
@@ -192,19 +194,11 @@ public class AlarmManager : MonoBehaviour
     {
         reminder.GetComponentInChildren<Text>().text = "GOOD" + Environment.NewLine + "MONING";
         ReplaceClock(reminder);
-        GetComponent<AudioSource>().Stop();
         Alarm = DateTime.MaxValue;
         moment = false;
         controler.AlarmOff();
     }
 }
 
-[Serializable]
-public class Data
-{
-    public string answer;
-    public bool forced;
-    public string image;
-}
 
 
