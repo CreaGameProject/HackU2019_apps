@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 public class AlarmManager : MonoBehaviour
 {
@@ -19,17 +20,18 @@ public class AlarmManager : MonoBehaviour
     [SerializeField] private GameObject setSwitch;
     [SerializeField] private GameObject reminder;
     [SerializeField] private Button[] importance;
-    [SerializeField] private AudioClip[] clips;
 
     private SleepMesurement mesurement;
     private DeviceControler controler;
     private GameObject displayClock;
+
     public DateTime Alarm;
     public TimeSpan sleepTime;
     public TimeSpan REMtime;
+    public int imp;
+    
     private int h;
     private int m;
-    private int imp;
     private bool onoff;
     private bool moment;
 
@@ -44,14 +46,21 @@ public class AlarmManager : MonoBehaviour
         sleepTime = TimeSpan.FromMinutes(360);
         REMtime = TimeSpan.FromMinutes(60);
         imp = 1;
-        importance[imp].image.color = Color.red + Color.gray;
+        SetImportance(imp);
+
+        StartCoroutine(AlarmInitialze());
     }
 
     private void FixedUpdate()
     {
         if (onoff)
         {
-            if (Alarm - REMtime < DateTime.Now && (!moment && mesurement.REM))
+            if(Alarm < DateTime.Now)
+            {
+                GetUpAlarm();
+                moment = true;
+            }
+            else if (Alarm - REMtime < DateTime.Now && (!moment && mesurement.REM()))
             {
                 GetUpAlarm();
                 moment = true;
@@ -125,7 +134,7 @@ public class AlarmManager : MonoBehaviour
     {
         importance[imp].image.color = Color.grey / 2 + Color.black / 2;
         imp = input;
-        importance[imp].image.color = Color.grey + Color.red;
+        importance[imp].image.color = Color.grey + Color.blue;
     }
 
     public void AlarmSet()
@@ -173,8 +182,6 @@ public class AlarmManager : MonoBehaviour
     {
         reminder.GetComponentInChildren<Text>().text = "GOOD" + Environment.NewLine + "NIGHT";
         ReplaceClock(reminder);
-        GetComponent<AudioSource>().clip = clips[3];
-        GetComponent<AudioSource>().Play();
     }
 
     //起床時のアラーム
@@ -182,8 +189,6 @@ public class AlarmManager : MonoBehaviour
     {
         reminder.GetComponentInChildren<Text>().text = "GET UP!!";
         ReplaceClock(reminder);
-        GetComponent<AudioSource>().clip = clips[imp];
-        GetComponent<AudioSource>().Play();
         controler.AlarmOn();
     }
 
@@ -192,11 +197,54 @@ public class AlarmManager : MonoBehaviour
     {
         reminder.GetComponentInChildren<Text>().text = "GOOD" + Environment.NewLine + "MONING";
         ReplaceClock(reminder);
-        GetComponent<AudioSource>().Stop();
         Alarm = DateTime.MaxValue;
-        controler.AlarmOff();
         moment = false;
+        controler.AlarmOff();
+    }
+
+    IEnumerator AlarmInitialze()
+    {
+        UnityWebRequest request = UnityWebRequest.Get("https://cgp-hacku2019.tech/api/tasks");
+
+        yield return request.SendWebRequest();
+        
+        if (request.isHttpError || request.isNetworkError)
+        {
+            Debug.Log(request.error);
+        }
+        else
+        {
+            String jsonString = "{\"items\":" + request.downloadHandler.text + "}";
+            AlarmTaskResponse response = JsonUtility.FromJson<AlarmTaskResponse>(jsonString);
+            AlarmTask task = response.items[0];
+
+            SetHour(task.soundsAt.Hour % 12);
+            SetMin(task.soundsAt.Minute);
+            SetAMPM(task.soundsAt.Hour > 12 ? 1 : 0);
+
+            AlarmSet();
+        }
     }
 }
 
+[System.Serializable]
+public class AlarmTaskResponse
+{
+    public List<AlarmTask> items;
+}
 
+[System.Serializable]
+public class AlarmTask
+{
+    public string sounds_at;
+
+    public DateTime soundsAt
+    {
+         get
+        {
+            return DateTime.Parse(
+                sounds_at, null, System.Globalization.DateTimeStyles.RoundtripKind
+            );
+        }
+    }
+}
