@@ -33,7 +33,7 @@ public class AlarmManager : MonoBehaviour
     private int h;
     private int m;
     private bool onoff;
-    private bool moment;
+    private bool isRinging;
 
     private void Start()
     {
@@ -55,15 +55,15 @@ public class AlarmManager : MonoBehaviour
     {
         if (onoff)
         {
-            if(Alarm < DateTime.Now)
+            if(!isRinging && Alarm < DateTime.Now)
             {
                 GetUpAlarm();
-                moment = true;
+                isRinging = true;
             }
-            else if (Alarm - REMtime < DateTime.Now && (!moment && mesurement.REM()))
+            else if (Alarm - REMtime < DateTime.Now && (!isRinging && mesurement.REM()))
             {
                 GetUpAlarm();
-                moment = true;
+                isRinging = true;
             }
         }
         else
@@ -198,7 +198,7 @@ public class AlarmManager : MonoBehaviour
         reminder.GetComponentInChildren<Text>().text = "GOOD" + Environment.NewLine + "MONING";
         ReplaceClock(reminder);
         Alarm = DateTime.MaxValue;
-        moment = false;
+        isRinging = false;
         controler.AlarmOff();
     }
 
@@ -216,13 +216,17 @@ public class AlarmManager : MonoBehaviour
         {
             String jsonString = "{\"items\":" + request.downloadHandler.text + "}";
             AlarmTaskResponse response = JsonUtility.FromJson<AlarmTaskResponse>(jsonString);
-            AlarmTask task = response.items[0];
 
-            SetHour(task.soundsAt.Hour % 12);
-            SetMin(task.soundsAt.Minute);
-            SetAMPM(task.soundsAt.Hour > 12 ? 1 : 0);
+            if (response.items.Count > 0)
+            {
+                AlarmTask task = response.items[response.items.Count - 1];
 
-            AlarmSet();
+                SetHour(task.soundsAt.Hour % 12);
+                SetMin(task.soundsAt.Minute);
+                SetAMPM(task.soundsAt.Hour > 12 ? 1 : 0);
+
+                AlarmSet();
+            }
         }
     }
 }
