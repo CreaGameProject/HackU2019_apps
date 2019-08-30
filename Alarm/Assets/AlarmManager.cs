@@ -34,6 +34,7 @@ public class AlarmManager : MonoBehaviour
     private int m;
     private bool onoff;
     private bool isRinging;
+    private bool isReminding;
 
     private void Start()
     {
@@ -68,9 +69,11 @@ public class AlarmManager : MonoBehaviour
         }
         else
         {
-            if (Alarm - sleepTime < DateTime.Now)
+            if (!isReminding && Alarm - sleepTime < DateTime.Now)
             {
                 reminder.GetComponentInChildren<Text>().text = "SLEEP!!";
+                controler.Sleep();
+                isReminding = true;
                 ReplaceClock(reminder);
             }
         }
@@ -147,7 +150,9 @@ public class AlarmManager : MonoBehaviour
         if (!onoff && Alarm - sleepTime < DateTime.Now)
         {
             reminder.GetComponentInChildren<Text>().text = "SLEEP!!";
+            controler.Sleep();
             ReplaceClock(reminder);
+            isReminding = true;
         }
     }
 
@@ -172,6 +177,7 @@ public class AlarmManager : MonoBehaviour
 
     private void ReplaceClock(GameObject display)
     {
+        isReminding = false;
         displayClock.SetActive(false);
         display.SetActive(true);
         displayClock = display;
