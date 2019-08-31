@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Unity.Notifications.Android;
 
 public class AlarmManager : MonoBehaviour
 {
@@ -35,6 +36,18 @@ public class AlarmManager : MonoBehaviour
     private bool onoff;
     private bool isRinging;
     private bool isReminding;
+
+    private void Awake()
+    {
+        var c = new AndroidNotificationChannel
+        {
+            Id = "hacku2019app",
+            Name = "HackU2019App",
+            Importance = Importance.High,
+            Description = "HackU2019の通知",
+        };
+        AndroidNotificationCenter.RegisterNotificationChannel(c);
+    }
 
     private void Start()
     {
@@ -73,6 +86,12 @@ public class AlarmManager : MonoBehaviour
             {
                 reminder.GetComponentInChildren<Text>().text = "SLEEP!!";
                 controler.SleepRemind();
+                var n = new AndroidNotification
+                {
+                    Title = "睡眠リマインド",
+                    Text = "そろそろ寝ましょう",
+                };
+                AndroidNotificationCenter.SendNotification(n, "hacku2019app");
                 isReminding = true;
                 ReplaceClock(reminder);
             }
@@ -151,6 +170,12 @@ public class AlarmManager : MonoBehaviour
         {
             reminder.GetComponentInChildren<Text>().text = "SLEEP!!";
             controler.SleepRemind();
+            var n = new AndroidNotification
+            {
+                Title = "睡眠リマインド",
+                Text = "そろそろ寝ましょう",
+            };
+            AndroidNotificationCenter.SendNotification(n, "hacku2019app");
             ReplaceClock(reminder);
             isReminding = true;
         }
