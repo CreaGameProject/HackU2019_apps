@@ -15,11 +15,17 @@ public class DeviceControler : MonoBehaviour
     string url = "https://yesno.wtf/api";
     //以下の3つをこのクラスにおけるメインメソッドとします。
 
-    public void Sleep()
+    public void SleepRemind()
     {
         source.clip = clips[3];
         source.Play();
     }
+
+    public void SleepRemindFinish()
+    {
+        source.Stop();
+    }
+
     public void AlarmOn()
     {
         source.clip = clips[manager.imp];

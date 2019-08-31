@@ -102,6 +102,12 @@
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/mzdkzk/Documents/UnityProjects/HackU2019_apps/Alarm/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Notifications.iOS">
+      <HintPath>C:/Users/mzdkzk/Documents/UnityProjects/HackU2019_apps/Alarm/Library/ScriptAssemblies/Unity.Notifications.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Notifications.Android">
+      <HintPath>C:/Users/mzdkzk/Documents/UnityProjects/HackU2019_apps/Alarm/Library/ScriptAssemblies/Unity.Notifications.Android.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>

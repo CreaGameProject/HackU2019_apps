@@ -72,7 +72,7 @@ public class AlarmManager : MonoBehaviour
             if (!isReminding && Alarm - sleepTime < DateTime.Now)
             {
                 reminder.GetComponentInChildren<Text>().text = "SLEEP!!";
-                controler.Sleep();
+                controler.SleepRemind();
                 isReminding = true;
                 ReplaceClock(reminder);
             }
@@ -150,7 +150,7 @@ public class AlarmManager : MonoBehaviour
         if (!onoff && Alarm - sleepTime < DateTime.Now)
         {
             reminder.GetComponentInChildren<Text>().text = "SLEEP!!";
-            controler.Sleep();
+            controler.SleepRemind();
             ReplaceClock(reminder);
             isReminding = true;
         }
@@ -187,6 +187,7 @@ public class AlarmManager : MonoBehaviour
     private void SleepAlarm()
     {
         reminder.GetComponentInChildren<Text>().text = "GOOD" + Environment.NewLine + "NIGHT";
+        controler.SleepRemindFinish();
         ReplaceClock(reminder);
     }
 
