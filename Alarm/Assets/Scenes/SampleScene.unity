@@ -1010,7 +1010,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &216331576
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2407,7 +2407,7 @@ GameObject:
   - component: {fileID: 699889203}
   m_Layer: 0
   m_Name: Manager
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2457,6 +2457,7 @@ MonoBehaviour:
   - {fileID: 140341616}
   - {fileID: 1054651310}
   imp: 0
+  raspberryAddress: 
 --- !u!82 &699889200
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2677,7 +2678,7 @@ GameObject:
   - component: {fileID: 751455745}
   m_Layer: 5
   m_Name: Panel
-  m_TagString: Untagged
+  m_TagString: Panel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2759,6 +2760,7 @@ MonoBehaviour:
   manager: {fileID: 699889199}
   sleep: {fileID: 126671051}
   rem: {fileID: 1069616627}
+  raspberryAddress: 
 --- !u!1 &760117043
 GameObject:
   m_ObjectHideFlags: 0
@@ -3543,8 +3545,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 120, y: -200}
-  m_SizeDelta: {x: 200, y: 60}
+  m_AnchoredPosition: {x: 0, y: -200}
+  m_SizeDelta: {x: 600, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &912751213
 MonoBehaviour:
@@ -3588,13 +3590,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 912751214}
   m_TextComponent: {fileID: 126671051}
   m_Placeholder: {fileID: 0}
-  m_ContentType: 2
+  m_ContentType: 0
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 4
+  m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 1
+  m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -7156,7 +7158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1543281793
 RectTransform:
   m_ObjectHideFlags: 0

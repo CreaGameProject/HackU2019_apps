@@ -37,6 +37,8 @@ public class AlarmManager : MonoBehaviour
     private bool isRinging;
     private bool isReminding;
 
+    public String raspberryAddress;
+
     private void Awake()
     {
         var c = new AndroidNotificationChannel
@@ -221,6 +223,7 @@ public class AlarmManager : MonoBehaviour
     {
         reminder.GetComponentInChildren<Text>().text = "GET UP!!";
         ReplaceClock(reminder);
+        StartCoroutine(LEDStart());
         controler.AlarmOn();
     }
 
@@ -232,6 +235,21 @@ public class AlarmManager : MonoBehaviour
         Alarm = DateTime.MaxValue;
         isRinging = false;
         controler.AlarmOff();
+    }
+
+    IEnumerator LEDStart()
+    {
+        UnityWebRequest request = UnityWebRequest.Get(raspberryAddress);
+        yield return request.SendWebRequest();
+        if (request.isHttpError || request.isNetworkError)
+        {
+            Debug.Log(request.error);
+        }
+        else
+        {
+            Response response = JsonUtility.FromJson<Response>(request.downloadHandler.text);
+            Debug.Log(response.message);
+        }
     }
 
     IEnumerator AlarmInitialze()
@@ -261,6 +279,13 @@ public class AlarmManager : MonoBehaviour
             }
         }
     }
+}
+
+[System.Serializable]
+public class Response
+{
+    public String message;
+    public Boolean success;
 }
 
 [System.Serializable]

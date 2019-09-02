@@ -9,6 +9,7 @@ public class SpanSetting : MonoBehaviour
     [SerializeField] private AlarmManager manager;
     [SerializeField] private Text sleep;
     [SerializeField] private Text rem;
+    public String raspberryAddress;
 
     private void Start()
     {
@@ -17,7 +18,10 @@ public class SpanSetting : MonoBehaviour
     }
     public void Sleep()
     {
-        manager.sleepTime=TimeSpan.FromMinutes(double.Parse(sleep.text));
+        GameObject managerObj = GameObject.FindGameObjectWithTag("Manager");
+        AlarmManager manager = managerObj.GetComponent<AlarmManager>();
+        manager.raspberryAddress = sleep.text;
+        Debug.Log(manager.raspberryAddress);
     }
 
     public void REM()
