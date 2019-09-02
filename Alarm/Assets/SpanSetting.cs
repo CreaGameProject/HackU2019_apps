@@ -9,18 +9,23 @@ public class SpanSetting : MonoBehaviour
     [SerializeField] private AlarmManager manager;
     [SerializeField] private Text sleep;
     [SerializeField] private Text rem;
+    [SerializeField] private InputField input;
     public String raspberryAddress;
 
-    private void Start()
+    private void Awake()
     {
-        sleep.text = manager.sleepTime.TotalMinutes.ToString();
-        rem.text = manager.REMtime.TotalMinutes.ToString();
+        // sleep.text = manager.sleepTime.TotalMinutes.ToString();
+        // rem.text = manager.REMtime.TotalMinutes.ToString();
+        input.text = PlayerPrefs.GetString("raspberryAddress");
+        manager.raspberryAddress = input.text;
     }
+
     public void Sleep()
     {
-        GameObject managerObj = GameObject.FindGameObjectWithTag("Manager");
-        AlarmManager manager = managerObj.GetComponent<AlarmManager>();
-        manager.raspberryAddress = sleep.text;
+        PlayerPrefs.SetString("raspberryAddress", input.text);
+        PlayerPrefs.Save();
+
+        manager.raspberryAddress = input.text;
         Debug.Log(manager.raspberryAddress);
     }
 

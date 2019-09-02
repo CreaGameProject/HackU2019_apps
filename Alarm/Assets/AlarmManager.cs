@@ -49,6 +49,8 @@ public class AlarmManager : MonoBehaviour
             Description = "HackU2019の通知",
         };
         AndroidNotificationCenter.RegisterNotificationChannel(c);
+
+        raspberryAddress = PlayerPrefs.GetString("raspberryAddress");
     }
 
     private void Start()
@@ -240,6 +242,7 @@ public class AlarmManager : MonoBehaviour
 
     IEnumerator LEDStart()
     {
+        Debug.Log(raspberryAddress);
         UnityWebRequest request = UnityWebRequest.Get(raspberryAddress);
         yield return request.SendWebRequest();
         if (request.isHttpError || request.isNetworkError)
