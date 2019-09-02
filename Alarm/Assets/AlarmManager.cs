@@ -171,7 +171,6 @@ public class AlarmManager : MonoBehaviour
         if (!onoff && Alarm - sleepTime < DateTime.Now)
         {
             reminder.GetComponentInChildren<Text>().text = "SLEEP!!";
-            controler.SleepRemind();
             var n = new AndroidNotification
             {
                 Title = "睡眠リマインド",
@@ -191,6 +190,7 @@ public class AlarmManager : MonoBehaviour
             setSwitch.GetComponent<Button>().image.color = Color.gray + Color.red;
             setSwitch.GetComponentInChildren<Text>().text = "ON";
             setSwitch.GetComponentsInChildren<RectTransform>()[1].anchoredPosition = Vector2.right * 80f;
+            controler.SleepRemind();
             SleepAlarm();
         }
         else
@@ -198,6 +198,7 @@ public class AlarmManager : MonoBehaviour
             setSwitch.GetComponent<Button>().image.color = Color.gray + Color.green;
             setSwitch.GetComponentInChildren<Text>().text = "OFF";
             setSwitch.GetComponentsInChildren<RectTransform>()[1].anchoredPosition = Vector2.left * 80f;
+            controler.SleepRemindFinish();
             StopAlerm();
         }
     }
@@ -214,7 +215,6 @@ public class AlarmManager : MonoBehaviour
     private void SleepAlarm()
     {
         reminder.GetComponentInChildren<Text>().text = "GOOD" + Environment.NewLine + "NIGHT";
-        controler.SleepRemindFinish();
         ReplaceClock(reminder);
     }
 
@@ -234,6 +234,7 @@ public class AlarmManager : MonoBehaviour
         ReplaceClock(reminder);
         Alarm = DateTime.MaxValue;
         isRinging = false;
+        StartCoroutine(LEDStop());
         controler.AlarmOff();
     }
 
@@ -249,6 +250,16 @@ public class AlarmManager : MonoBehaviour
         {
             Response response = JsonUtility.FromJson<Response>(request.downloadHandler.text);
             Debug.Log(response.message);
+        }
+    }
+
+    IEnumerator LEDStop()
+    {
+        UnityWebRequest request = UnityWebRequest.Get(raspberryAddress + "/stop");
+        yield return request.SendWebRequest();
+        if (request.isHttpError || request.isNetworkError)
+        {
+            Debug.Log(request.error);
         }
     }
 
